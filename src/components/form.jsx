@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Form({ tasks, onSubmitTask }) {
+function Form({ tasks, onSubmitTask, onFinishTask }) {
     const [inputValue, setInputValue] = useState('');
 
     const handleChange = (e) => {
@@ -17,16 +17,8 @@ function Form({ tasks, onSubmitTask }) {
         }
     };
 
-    const handleFinishTask = (id) => {
-        // update the task status for the task with the given id
-        const updatedTasks = tasks.map(task =>
-            task.id === id ? { ...task, isCompleted: true } : task
-        );
-        onSubmitTask(updatedTasks);
-    }
-
     return (
-        <div className="w-96 mx-auto mt-12 p-4">
+        <div className="w-96 mx-auto  p-4">
             <form className="flex gap-4 mb-8" onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -51,7 +43,7 @@ function Form({ tasks, onSubmitTask }) {
                         {task.text}
                         <button
                             className={`ml-4 w-6 h-6 rounded-full border-2 ${task.isCompleted ? 'bg-green-500 border-green-500' : 'border-gray-300'}`}
-                            onClick={() => handleFinishTask(task.id)}
+                            onClick={() => onFinishTask(task.id)}
                         >
                         </button>
                     </li>

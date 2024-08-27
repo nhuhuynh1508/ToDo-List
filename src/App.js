@@ -19,14 +19,24 @@ function App() {
 
     const handleSubmitTask = (value) => {
         if (!value) return
-        setTasks([...tasks, { text: value, isCompleted: false, id: generateRandomID(8) }]);
+        setTasks([...tasks, { text: value, isCompleted: false, id: generateRandomID(8)}]);
     }
+
+    const handleFinishTask = (id) => {
+        const updatedTasks = tasks.map((task) => {
+            if (task.id === id) {
+                return { ...task, isCompleted: !task.isCompleted };
+            }
+            return task;
+        });
+        setTasks(updatedTasks);
+    };
 
     return (
         <div className="bg-black min-h-screen justify-center items-center">
             <Header />
             <Dashboard tasks={tasks} />
-            <Form tasks={tasks} onSubmitTask={handleSubmitTask} />
+            <Form tasks={tasks} onSubmitTask={handleSubmitTask} onFinishTask={handleFinishTask}/>
         </div>
     );
 }
