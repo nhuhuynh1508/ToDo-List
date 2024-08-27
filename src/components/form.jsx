@@ -33,7 +33,7 @@ function Form({ tasks, onSubmitTask }) {
                     value={inputValue}
                     placeholder="Write your next task..."
                     onChange={handleChange}
-                    className="w-80 h-12 p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-96 h-12 p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
                 <button
                     type="submit"
