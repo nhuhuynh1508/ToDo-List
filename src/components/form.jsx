@@ -1,26 +1,32 @@
 import { useState } from "react";
 
-function Form() {
-    const [tasks, setTasks] = useState([]);
+function Form({ tasks, onSubmitTask }) {
     const [inputValue, setInputValue] = useState('');
 
-    function handleChange(e) {
+    const handleChange = (e) => {
         setInputValue(e.target.value);
     }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = (e) => {
+        e.preventDefault();
         if (inputValue) {
-            setTasks([...tasks, inputValue]);
+            onSubmitTask(inputValue);
             setInputValue('');
         } else {
             alert('Enter a task!')
         }
-        
     };
 
+    const handleFinishTask = (id) => {
+        // update the task status for the task with the given id
+        const updatedTasks = tasks.map(task =>
+            task.id === id ? { ...task, isCompleted: true } : task
+        );
+        onSubmitTask(updatedTasks);
+    }
+
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen p-4">
+        <div className="w-96 mx-auto mt-12 p-4">
             <form className="flex gap-4 mb-8" onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -36,11 +42,21 @@ function Form() {
                     +
                 </button>
             </form>
-                <ul className="py-2 rounded-lg shadow-sm w-96 space-y-4">
-                        {tasks.map((tasks) => (
-                    <li key={tasks} className="py-2 pl-3 border border-white text-white rounded-md">{tasks}</li>
-                    ))}
-                </ul>
+            <ul className="py-2 rounded-lg shadow-sm space-y-4">
+                {tasks.map((task) => (
+                    <li
+                        key={task.id}
+                        className="py-2 pl-3 pr-3 border border-white text-white rounded-md flex justify-between items-center"
+                    >
+                        {task.text}
+                        <button
+                            className={`ml-4 w-6 h-6 rounded-full border-2 ${task.isCompleted ? 'bg-green-500 border-green-500' : 'border-gray-300'}`}
+                            onClick={() => handleFinishTask(task.id)}
+                        >
+                        </button>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
