@@ -15,7 +15,7 @@ function Dashboard({ tasks }) {
                     <p className="text-2xl md:text-3xl font-semibold">Task Done</p>
                     <p className="text-lg md:text-xl text-gray-400">Keep it up!</p>
                 </div>
-                <div className="flex items-center justify-center w-24 h-24 md:w-16 md:h-16 bg-green-600 rounded-full text-lg md:text-xl">
+                <div className="flex items-center justify-center w-24 h-24 md:w-16 md:h-16 bg-green-600 rounded-full text-2xl md:text-xl">
                     {completedTasks}/{totalTasks}
                 </div>
             </div>

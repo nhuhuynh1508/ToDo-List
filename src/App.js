@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Dashboard from './components/dashboard';
 import Form from './components/form';
 import Header from './components/header';
@@ -15,6 +15,23 @@ export function generateRandomID(length) {
 
 function App() {
     const [tasks, setTasks] = useState([]);
+
+    // function to handle storage
+    // when reloaded, to avoid losing the tasks, add a condition to check if there are tasks in the local storage
+    useEffect(() => {
+        console.log('tasks', tasks);
+        if (tasks.length > 0) {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+    }, [tasks]);
+
+    useEffect(() => {
+        const tasks = JSON.parse(localStorage.getItem('tasks'));
+        if (tasks) {
+            setTasks(tasks);
+        }
+
+    }, []);
     
     const handleSubmitTask = (value) => {
         if (!value) return
