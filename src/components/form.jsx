@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function Form({ tasks, onSubmitTask, onFinishTask }) {
+function Form({ tasks, onSubmitTask, onFinishTask, onRemoveTask }) {
     const [inputValue, setInputValue] = useState('');
 
     const handleChange = (e) => {
@@ -9,27 +9,35 @@ function Form({ tasks, onSubmitTask, onFinishTask }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (inputValue) {
-            onSubmitTask(inputValue);
+        if (inputValue.trim()) {
+            onSubmitTask(inputValue.trim());
             setInputValue('');
         } else {
-            alert('Enter a task!')
+            alert('Enter a task!');
         }
     };
 
+    useEffect(() => {
+        // console.log("Input value changed:", inputValue);
+        if (inputValue.length >= 10) {
+            alert('Your input is too long, try again!');
+        }
+    },[inputValue]);
+    
+
     return (
-        <div className="w-96 mx-auto  p-4">
-            <form className="flex gap-4 mb-8" onSubmit={handleSubmit}>
+        <div className="w-full max-w-lg mx-auto p-4">
+            <form className="flex flex-col sm:flex-row gap-4 -mt-6 mb-4" onSubmit={handleSubmit}>
                 <input
                     type="text"
                     value={inputValue}
                     placeholder="Write your next task..."
                     onChange={handleChange}
-                    className="w-96 h-12 p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="flex-grow h-12 p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
                 <button
                     type="submit"
-                    className="w-12 h-12 bg-green-700 text-white flex rounded-md items-center justify-center text-lg font-bold hover:bg-green-500 shadow-md"
+                    className="w-full sm:w-12 h-12 bg-green-700 text-white flex rounded-md items-center justify-center text-lg font-bold hover:bg-green-500 shadow-md"
                 >
                     +
                 </button>
@@ -38,13 +46,21 @@ function Form({ tasks, onSubmitTask, onFinishTask }) {
                 {tasks.map((task) => (
                     <li
                         key={task.id}
-                        className="py-2 pl-3 pr-3 border border-white text-white rounded-md flex justify-between items-center"
+                        className="py-2 pl-3 pr-3 border border-white text-white rounded-md flex items-center justify-between"
                     >
-                        {task.text}
+                        <div className="flex items-center gap-2">
+                            <button
+                                className={`w-6 h-6 rounded-full border-2 ${task.isCompleted ? 'bg-green-500 border-green-500' : 'border-gray-300'}`}
+                                onClick={() => onFinishTask(task.id)}
+                            >
+                            </button>
+                            <span>{task.text}</span>
+                        </div>
                         <button
-                            className={`ml-4 w-6 h-6 rounded-full border-2 ${task.isCompleted ? 'bg-green-500 border-green-500' : 'border-gray-300'}`}
-                            onClick={() => onFinishTask(task.id)}
+                            className="text-white hover:text-gray-200 bg-red-500 px-2 py-1 rounded-md"
+                            onClick={() => onRemoveTask(task.id)}
                         >
+                            Remove
                         </button>
                     </li>
                 ))}
